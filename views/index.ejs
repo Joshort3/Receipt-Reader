@@ -1,0 +1,456 @@
+<!--step 1: phone number verification
+    step 2: get files
+	step 3: email results
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Receipt Reader</title>
+        <link rel="stylesheet" href="css/style.css">
+
+    </head>
+    <!---------------------------------------------------------------->
+    <!----------------------------- HTML ----------------------------->
+    <!---------------------------------------------------------------->
+
+    <body>
+        <div class = "page-container">
+            <div class = "content-wrap">
+                <div class = "segment-1">
+                    <div class = "segment-1-child">
+                        <ion-icon name = "receipt-outline"></ion-icon>
+                        <h1>Receipt Reader</h1>
+                        <p>A quick way to upload, process, and place receipt information into a Google Sheets document.<br> <br>
+                        Watch an example <a href="https://youtu.be/_YxAeBmbONU" target="_blank" style="color:white">here</a>.</p>
+                    </div>
+                </div>
+                <div class = "segment-2">
+                    <div id="step1" class="Submission_Container">
+                        <div id="step1" class = "Submission_Box">
+                            <p id="inst"> Enter your phone number for verification.</p>
+                            <input class="PhoneNumberInput" type="text" id="PhoneNumberInput" value = "" placeholder="(___)-___-____" pattern="^\([0-9]{3}\)\s[0-9]{3}-[0-9]{4}$" autocomplete="on">
+                            <button onclick="SendPhoneNumber()" class="submit_button">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer>
+                <div class = "contact-footer">
+                        <h3>Questions?</h3>
+                        <div class = "box">
+                            <!-- <ion-icon name="mail"></ion-icon> -->
+                            <a href="mailto:rr.receipt.reader@gmail.com">rr.receipt.reader@gmail.com</a>
+                        </div>
+                </div>
+            </footer>
+        </div>
+    </body>
+
+    <!---------------------------------------------------------------------->
+    <!----------------------------- JAVASCRIPT ----------------------------->
+    <!---------------------------------------------------------------------->
+    <script type="text/javascript">
+        var PhoneNumber;
+        var UserEmail;
+        var file_names;
+        var arrayOfData = [[],[]];
+        var posOfArray;
+
+        /* --------------------------------------------------------------------------------------- */
+        /* ----------------------------- HTML MANIPULATION FUNCTIONS ----------------------------- */
+        /* --------------------------------------------------------------------------------------- */
+        ////////// SHOW INPUT BOX WHEN TOTAL IS INCORRECT //////////
+        function showInput(checkboxId) {
+          var check = document.getElementById(checkboxId + 'Check');
+          if (check.checked == false) {
+            var inputBox = document.getElementById(checkboxId + 'Input');
+            inputBox.style = '';
+          }
+          else {
+            var inputBox = document.getElementById(checkboxId + 'Input');
+            inputBox.style = 'display: none';
+          }
+        }
+
+        ////////// PHONE NUMBER AUTO FORMAT //////////
+    		function phone_number_mask(e) {
+      			var x = e || window.event;
+      			var key = (x.keyCode || x.which);
+      			if(key == 13 || key == 3){
+      				SendPhoneNumber();
+      			}
+            var myMask = "(___) ___-____";
+            var myCaja = document.getElementById("PhoneNumberInput");
+            var myText = "";
+            var myNumbers = [];
+            var myOutPut = ""
+            var theLastPos = 1;
+            myText = myCaja.value;
+            //get numbers
+            for (var i = 0; i < myText.length; i++) {
+                if (!isNaN(myText.charAt(i)) && myText.charAt(i) != " ") {
+                    myNumbers.push(myText.charAt(i));
+                }
+            }
+            //write over mask
+            for (var j = 0; j < myMask.length; j++) {
+                if (myMask.charAt(j) == "_") { //replace "_" by a number
+                    if (myNumbers.length == 0)
+                        myOutPut = myOutPut + myMask.charAt(j);
+                    else {
+                        myOutPut = myOutPut + myNumbers.shift();
+                        theLastPos = j + 1; //set caret position
+                    }
+                } else {
+                    myOutPut = myOutPut + myMask.charAt(j);
+                }
+            }
+            document.getElementById("PhoneNumberInput").value = myOutPut;
+            document.getElementById("PhoneNumberInput").setSelectionRange(theLastPos, theLastPos);
+        }
+
+        document.getElementById("PhoneNumberInput").onkeyup = phone_number_mask;
+        function getValue(ElementID){
+            var elem = document.getElementById(ElementID);
+            val = elem.value;
+            return val;
+        }
+
+        ////////// FILE UPLOADING //////////
+        function photoForm(){
+          file_names = '';
+            var x = document.getElementById("photoFile");
+            var txt = "";
+            if ('files' in x) {
+                if (x.files.length == 0) {
+                    txt = "Select one or more files.";
+                    document.getElementById("photoSubmit").disabled = true;
+                }
+                else {
+                    file_names = x.files.length; // added
+                    for (var i = 0; i < x.files.length; i++) {
+                        var file = x.files[i];
+                        if ('name' in file) {
+                            file_names += " " + file.name; // txt -> file_names
+                        }
+                        document.getElementById("photoSubmit").disabled = false;
+                    }
+                }
+            }
+            else {
+                if (x.value == "") {
+                    txt += "Select one or more files.";
+                    document.getElementById("photoSubmit").disabled = true;
+                }
+                else {
+                    txt += "The files property is not supported by your browser! Please select another.";
+                    txt  += "<br>The path of the selected file: " + x.value; // If the browser does not support the files property, it will return the path of the selected file instead.
+                    document.getElementById("photoSubmit").disabled = true;
+                }
+            }
+            if (txt != '') {document.getElementById("inst").innerHTML = txt;} // edited
+        }
+
+        ////////// DYNAMIC HTML //////////
+        function changeState() {
+            var elem = document.querySelector("div.Submission_Container");
+            val2 = elem.id;
+
+            ////////// VERIFY PHONE NUMBER //////////
+            if (elem.id == 'step1') {
+              elem.innerHTML = '<div class = "Submission_Box">' +
+                '<p id="inst">Enter verification code sent to your phone number.</p>' +
+                '<input class="VerificationCodeInput" type="text" placeholder="######" id="CodeInput">' +
+                '<button class = "submit_button" onclick="SendCodeVerification()">' +
+                '    Submit' +
+                '</button>' +
+                '</div>';
+              elem.id = 'step2';
+      				function code_enter_function(e) {
+      				var x = e || window.event;
+      				var key = (x.keyCode || x.which);
+      				if(key == 13 || key == 3){
+      					SendCodeVerification();
+      				}
+      				}
+      				document.getElementById("CodeInput").onkeyup = code_enter_function;
+            }
+            ////////// COLLECT PHOTOS //////////
+            else if (elem.id == 'step2') {
+              elem.innerHTML = '<div class = "Submission_Box">'
+                      + '<p id="inst">Attach photo files here.</p>'
+                      + '<iframe width="0" height="0" border="0" name="dummyFrame" id="dummyFrame"></iframe>'
+                      + '<form id="form1" action = "/" method="POST" target = "dummyFrame" enctype="multipart/form-data">'
+                      + '<input type="file" accept=".png,.jpg" id="photoFile" name="filetoupload" multiple size="50" onchange="photoForm()" required><br>'
+                      + '</form>'
+                      + '<button id="photoSubmit" class = "submit_button" onclick="SendPhotos()" disabled="true">Submit</button>'
+                      + '</div>';
+              elem.id = 'step2.5';
+            }
+            ////////// CONFIRM OCR DATA //////////
+            else if (elem.id == 'step2.5') {
+              if(posOfArray == -1) {
+                  elem.id = 'step3';
+                  SendData();
+              }
+              else {
+                var str = '';
+                var str2 = '';
+                if(arrayOfData[posOfArray].length > 3) {
+                  str = '<br>Last 4 Digits: ' + arrayOfData[posOfArray][3];
+                  str2 = '<div id="check4">' + '<label for="cardCheck"> Are the last four card digits correct?</label>' +
+                      '<input type="checkbox" id="cardCheck" onchange="showInput(\'card\')" checked><input type="text" id="cardInput" value = \'' + arrayOfData[posOfArray][3] + '\' style="display: none">' +
+                    '</div>';
+                }
+                elem.innerHTML = '<div class = "Submission_Box">' +
+                        '<p id="inst">Confirm the data from receipts.<br>' +
+                          '<br>Store Name: ' + arrayOfData[posOfArray][0] +
+                          '<br>Date: ' + arrayOfData[posOfArray][1] +
+                          '<br>Total: ' + arrayOfData[posOfArray][2] +
+                          str +
+                        '</p>' +
+                        '<div id="check1">' +
+                          '<label for="storeCheck"> Is the store name correct?</label>' +
+                          '<input type="checkbox" id="storeCheck" onchange="showInput(\'store\')" checked><input type="text" id="storeInput" value=\'' + arrayOfData[posOfArray][0] + '\' style="display: none">' +
+                        '</div>' +
+                        '<div id="check2">' +
+                          '<label for="dateCheck"> Is the date correct?</label>' +
+                          '<input type="checkbox" id="dateCheck" onchange="showInput(\'date\')" checked><input type="text" id="dateInput" value = \'' + arrayOfData[posOfArray][1] + '\' style="display: none">' +
+                        '</div>' +
+                        '<div id="check3">' +
+                          '<label for="totalCheck"> Is the total correct?</label>' +
+                          '<input type="checkbox" id="totalCheck" onchange="showInput(\'total\')" checked><input type="text" id="totalInput" value = \'' + arrayOfData[posOfArray][2] + '\' style="display: none">' +
+                        '</div>' +
+                        str2 +
+                        '<button class = "submit_button" onclick="checkPos()">' +
+                        'Submit' +
+                        '</button>' +
+                        '</div>';
+              }
+            }
+            ////////// COLLECT EMAIL //////////
+            else if (elem.id == 'step3') {
+              elem.innerHTML = '<div class = "Submission_Box">' +
+                '<p id="inst">Enter your email to receive results.</p>' +
+                '<input class="EmailInput" type="text" id="EmailInput" placeholder="john.doe@gmail.com">' +
+                '<button class = "submit_button" onclick="SendEmail()">' +
+                'Submit' +
+                '</button>' +
+                '</div>';
+              elem.id = 'step4';
+      			  function email_enter_function(e) {
+                  var x = e || window.event;
+            			var key = (x.keyCode || x.which);
+            			if(key == 13 || key == 3){
+            				//document.getElementById("PhoneNumberInput").value = "enter";
+            				SendEmail();
+		              }
+        			}
+        			document.getElementById("EmailInput").onkeyup = email_enter_function;
+            }
+            ////////// COMPLETED //////////
+            else if (elem.id == 'step4') {
+              elem.innerHTML = '<div class = "Submission_Box">' +
+                  '<p>Spreadsheet sent to your email. <a href="' + location.origin + '" style="color:black">Restart</a></p>' +
+                  '</div>';
+            }
+        }
+
+        function checkPos() {
+          arrayOfData[posOfArray][0] = document.getElementById("storeInput").value;
+          arrayOfData[posOfArray][1] = document.getElementById("dateInput").value;
+          arrayOfData[posOfArray][2] = document.getElementById("totalInput").value;
+          if(arrayOfData[posOfArray].length > 3) {
+            arrayOfData[posOfArray][3] = document.getElementById("cardInput").value;
+          }
+          posOfArray -= 1;
+          changeState();
+        }
+        /* ---------------------------------------------------------------------------------------- */
+        /* ----------------------------- BACKEND PROCESSING FUNCTIONS ----------------------------- */
+        /* ---------------------------------------------------------------------------------------- */
+
+        ////////// INITIATE PHONE VERIFICATION //////////
+        function SendPhoneNumber() {
+            try {
+                PhoneNumber = (getValue("PhoneNumberInput")).replace(/[^0-9.]/g, "");
+                if (PhoneNumber.length != 10) {
+                  document.getElementById("inst").innerHTML = "Enter a valid 10-digit phone number.";
+                }
+                else {
+                  var HOST = location.origin.replace(/^http/, 'ws');
+                  const ws = new WebSocket(HOST);
+                  ws.onopen = function () {
+                      ws.send("phone" + PhoneNumber);
+                  }
+
+                  ws.onmessage = function (e) {
+                      request_id = e.data;
+                      if (request_id != '0') {
+                          changeState();
+                      }
+                      else {
+                          document.getElementById("inst").innerHTML = "Enter a valid 10-digit phone number.";
+                      }
+                      ws.close();
+                  }
+              }
+            }
+            catch {
+                document.getElementById("inst").innerHTML = 'Error. Please <a href="' + location.origin + '">try again</a>.';
+            }
+        }
+
+        ////////// INITIATE PHONE VERIFICATION //////////
+        function SendCodeVerification() {
+            try {
+                var code = getValue("CodeInput");
+
+                var HOST = location.origin.replace(/^http/, 'ws');
+                const ws = new WebSocket(HOST);
+                ws.onopen = function () {
+                    ws.send("verif" + code + request_id);
+                }
+
+                ws.onmessage = function (e) {
+                    status = e.data;
+                    if (status == '0') {
+                        changeState();
+                    }
+                    else {
+                        document.getElementById("inst").innerHTML = 'Incorrect verification code. Please try again.';
+                    }
+                    ws.close();
+                }
+            }
+            catch {
+            document.getElementById("inst").innerHTML = 'Did not verify phone number. Please <a href="' + location.origin + '">try again</a>.';
+            }
+        }
+
+        ////////// INITIATE OCR PROCESS //////////
+        function SendPhotos() {
+            try {
+                var HOST = location.origin.replace(/^http/, 'ws');
+                const ws = new WebSocket(HOST);
+                ws.onopen = function () {
+                    if (file_names.split(" ", 1) != "0") {
+                      document.getElementById("form1").style = "display: none";
+                      document.querySelector("button.submit_button").style = "display: none";
+                      document.getElementById("inst").innerHTML = '<p>Reading and Parsing Pictures...</p><div class="lds-circle"><div></div></div>';
+                      document.getElementById("form1").submit();
+                      setTimeout(function(){
+                        ws.send("files" + PhoneNumber + file_names);
+                      }, 500);
+                    }
+                    else {
+                        document.getElementById("form1").style = "";
+                        document.querySelector("button.submit_button").style = "";
+                        document.getElementById("inst").innerHTML = 'Please select files before submitting.';
+                    }
+                }
+
+                ws.onmessage = function (e) {
+                    tempArray = e.data;
+                    if (tempArray == "empty") {
+                      setTimeout(function(){
+                        ws.send("files" + file_names);
+                      }, 500);
+                    }
+                    else if (tempArray) {
+                      arrayOfData = tempArray.split("<br>");
+                      for (var i = 0; i < arrayOfData.length; i++) {
+                        arrayOfData[i] = arrayOfData[i].split(" ");
+                      }
+                      posOfArray = arrayOfData.length - 1;
+                      changeState();
+                    }
+                    else {
+                        document.getElementById("form1").style = "";
+                        document.querySelector("button.submit_button").style = "";
+                        document.getElementById("inst").innerHTML = 'Please resubmit files.';
+                    }
+                    if (tempArray != "empty") {ws.close();}
+                }
+            }
+            catch {
+                document.getElementById("form1").style = "";
+                document.querySelector("button.submit_button").style = "";
+                document.getElementById("inst").innerHTML = 'Please resubmit files.';
+            }
+        }
+
+        ////////// INITIATE SEND DATA //////////
+        function SendData() {
+          try {
+            var HOST = location.origin.replace(/^http/, 'ws');
+            const ws = new WebSocket(HOST);
+            ws.onopen = function () {
+                var parsed_data = '';
+                document.getElementById("check1").style = "display: none";
+                document.getElementById("check2").style = "display: none";
+                document.getElementById("check3").style = "display: none";
+                document.querySelector("button.submit_button").style = "display: none";
+                if(document.getElementById("check4") !== null) {document.getElementById("check4").style = "display: none";}
+                document.getElementById("inst").innerHTML = '<p>Creating Your Spreadsheet...</p><div class="lds-circle"><div></div></div>';
+                for(var i = 0; i < arrayOfData.length; i++) {
+                    if (i != 0) {parsed_data += '<br>';}
+                    for(var j = 0; j < arrayOfData[i].length; j++){
+            					parsed_data += arrayOfData[i][j];
+                      if(j != arrayOfData[i].length -1) {parsed_data += ',,,';}
+                    }
+                }
+                ws.send("parse" + PhoneNumber + parsed_data);
+            }
+
+            ws.onmessage = function (e) {
+                text = e.data;
+                if (text == 'Received') {
+                    changeState();
+                }
+                else {
+                    document.getElementById("inst").innerHTML = 'I don\'t know what to tell you.';
+                }
+                ws.close();
+            }
+          }
+          catch {
+              document.getElementById("inst").innerHTML = 'Client: Error. Could not send data. Please  <a href="' + location.origin + '" style="color:black">start over</a>.';
+          }
+        }
+
+        ////////// INITIATE SEND EMAIL //////////
+        function SendEmail() {
+            try {
+                UserEmail = getValue("EmailInput");
+                var HOST = location.origin.replace(/^http/, 'ws');
+                const ws = new WebSocket(HOST);
+                ws.onopen = function () {
+                    document.getElementById("EmailInput").style = "display: none";
+                    document.querySelector("button.submit_button").style = "display: none";
+                    document.getElementById("inst").innerHTML = '<p>Emailing Results...</p><div class="lds-circle"><div></div></div>';
+                    ws.send("email" + PhoneNumber + UserEmail);
+                }
+
+                ws.onmessage = function (e) {
+                    text = e.data;
+                    if (text == 'Sent') {
+                        changeState();
+                    }
+                    else {
+                        document.getElementById("EmailInput").style = "";
+                        document.querySelector("button.submit_button").style = "";
+                        document.getElementById("inst").innerHTML = 'Please enter a valid email.';
+                    }
+                    ws.close();
+                }
+            }
+            catch {
+                document.getElementById("inst").innerHTML = 'Client: Error. Could not send email. Please  <a href="' + location.origin + '" style="color:black">start over</a>.';
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+</html>

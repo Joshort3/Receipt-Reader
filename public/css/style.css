@@ -1,0 +1,189 @@
+/* ----------------------------------------------------------- */
+/* ---------------------- BASIC CLASSES ---------------------- */
+/* ----------------------------------------------------------- */
+
+html, body {
+    padding: 0px;
+    margin: 0px;
+    font-size: 16px;
+}
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    min-height: 2.5rem;
+    max-height: 10vh;
+    min-width: 20rem;
+
+    background-color: white;
+    border-radius: 5px 5px 0px 0px;
+}
+
+h1 {
+    font-size: 300%;
+}
+h3 {
+    font-size: 155%;
+}
+p {
+    line-height: 2rem;
+    font-size: 130%;
+}
+
+/* ------------------------------------------------------------ */
+/* ---------------------- CUSTOM CLASSES ---------------------- */
+/* ------------------------------------------------------------ */
+
+body .page-container {
+    position: relative;
+    min-height: 100vh;
+    text-align: center;
+
+    /* background-color: #2F3E4F; */
+    background: #141e30; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #141e30, #243b55); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #141e30, #243b55); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+    .page-container .content-wrap {
+        min-height: 90vh;
+        padding-bottom: 10vh;
+    }
+
+        .page-container .content-wrap .segment-1 {
+            position: relative;
+            min-height: 30rem;
+            max-height: 50vh;
+        }
+            .page-container .content-wrap .segment-1 .segment-1-child{
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: white;
+                width: 30rem;
+            }
+                .segment-1-child ion-icon {
+                    margin: 0 auto;
+                    font-size: 500%;
+                    padding-bottom: 1rem;
+                }
+                .segment-1-child h1 {
+                    margin: 0 auto;
+                    padding-bottom: 2.5rem;
+                }
+                .segment-1-child p {
+                    margin: 0 auto;
+                }
+        .page-container .content-wrap .segment-2 {
+            position: relative;
+            /* min-height: 35rem; */
+            min-height:30rem;
+        }
+                .segment-2 .Submission_Container{
+                    position: absolute;
+                    top: 0%;
+                    left: 50%;
+                    transform: translate(-50%, -0%);
+
+                    width: 30%;
+                    min-width: 30rem;
+                    min-height: 10rem;
+
+                    background-color: white;
+                    border-radius: 25px;
+                }
+                    .Submission_Container .Submission_Box{
+                        padding: 2rem 0rem 3rem 0rem;
+                        color: black;
+                    }
+                        .Submission_Box p {
+                        }
+                        .Submission_Box .PhoneNumberInput {
+                            display: inline-block;
+                            height: 2.5rem;
+                            width: 15rem;
+                            font-size: 100%;
+                            border-radius: 10px;
+                            border: 1.75px solid #cccccc;
+                        }
+                        .Submission_Box .VerificationCodeInput{
+                            display: inline-block;
+                            height: 2.5rem;
+                            width: 15rem;
+                            font-size: 100%;
+                            border-radius: 10px;
+                            border: 1.75px solid #cccccc;
+                        }
+                        .Submission_Box .EmailInput{
+                            display: inline-block;
+                            height: 2.5rem;
+                            width: 15rem;
+                            font-size: 100%;
+                            border-radius: 10px;
+                            border: 1.75px solid #cccccc;
+                        }
+                        .Submission_Box .submit_button {
+                            display: inline-block;
+                            margin-left: .5rem;
+                            background-color: lightgray;
+                            border-radius: 20px;
+                            height: 40px;
+                            width: 100px;
+                            font-size: 100%;
+                            border: 1.75px solid #cccccc;
+                            margin-top: 1.5rem;
+                        }
+    .page-container .contact-footer {
+        margin: 0 auto;
+        padding: 1.5rem 0rem 1.5rem 0rem;
+    }
+            .contact-footer h3 {
+                margin: 0 auto;
+                padding-bottom: .5rem;
+            }
+            .contact-footer .box {
+                margin: 0 auto;
+            }
+                /* .box ion-icon {
+                    display: inline-block;
+                    padding-right: .5rem;
+                    font-size: 135%;
+                } */
+                .box a {
+                    display: inline-block;
+                    color: black;
+                    font-size: 135%;
+                }
+
+/* -------------------------------------------- */
+/* --------------- LOADING ICON --------------- */
+/* -------------------------------------------- */
+
+.lds-circle {
+  display: inline-block;
+  transform: translateZ(1px);
+}
+.lds-circle > div {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  margin: 8px;
+  border-radius: 50%;
+  background: #2F3E4F;
+  animation: lds-circle 2.4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+@keyframes lds-circle {
+  0%, 100% {
+    animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
+  }
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(1800deg);
+    animation-timing-function: cubic-bezier(0, 0.5, 0.5, 1);
+  }
+  100% {
+    transform: rotateY(3600deg);
+  }
+}

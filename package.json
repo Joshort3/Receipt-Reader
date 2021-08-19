@@ -1,0 +1,31 @@
+{
+  "name": "rr-receipt-reader",
+  "description": "Our receipt reading Heroku app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "^4.7.0",
+    "@google-cloud/vision": "^1.11.0",
+    "@sendgrid/mail": "^7.0.0",
+    "busboy": "^0.3.1",
+    "child_process": "^1.0.2",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.0.2",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "google-auth-library": "^6.0.0",
+    "google-spreadsheet": "^3.0.11",
+    "googleapis": "^49.0.0",
+    "http": "0.0.1-security",
+    "jquery": "^3.5.0",
+    "nexmo": "^2.6.0",
+    "node": "^13.12.0",
+    "nodemailer": "^6.4.6",
+    "python3": "0.0.1",
+    "unirest": "^0.6.0",
+    "websocket": "^1.0.31",
+    "ws": "^7.2.3"
+  }
+}

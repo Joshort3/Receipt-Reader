@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "second-lodge-275202",
+  "private_key_id": "8837972f042e62308a24305bcf2190b90c9b9e68",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCra2aO8hUtyZXf\nJ7JG+IdoK2XbWN95tHTteQpVGz06rB1OvAuU2FmzSGzt3eSlc9Ui7j7E4kJvrBp0\nEzXh1F0QYor6TLqQ/P+CCCxP63yH1zlX+nNt13Ch2tpQVMwekctMTEU8NvMmODd9\n0c0hyX84usb8j8DDkjuTD59Zt6vj8Eau2mCd/tjFDIx1P8nt/IuMNafr0qQ7zZgB\n7Q54kDePVz+4KSUAfe7bCAwbcse469SfnYEjpMtjiUHtRbk5JeVUFJ9fahK75xRF\nfXtcWbmtO4lLUUnCn59PDNkMRopQ1MdAXdlzeUbXAPKl1YNZ2+JMKQdNGwPA8lXD\njZOhAHy1AgMBAAECggEAFicnlmKfrQ6nsTKqnfRhX2t4WtwF6W8SS1xAoxYFmC8F\nDJdNsdsx4HMELMtn0KADE+QRNZV9+3uU4ZpX9MriigsKJeXDmJgxlwbiXyOyMMX2\nMbH6t9/HPQuQ+h+zT2INEVur+OerDa3nMfnqliq5p8WvkJUtVrjvvQYgVFJhwu+k\nW43RPidr9zaRwG+qzZIv+rodUsMeu4qcAoFVJSBbGmz2Pr/XUnd/4V5Xbre+ld7X\nD39poar5x5OLdifNhtLsuMaOyMi0xz9BAmG3my4/0lNPCyIXqfnnvpOItD4brx36\n129dT4FfGlK1PpHDnG9E3m9IjVYV9rF4BEU4mJQs4wKBgQDqx65N1r58jVoNWOug\nV9ZLWi9QZY1wvlOHo58Yj+exvzxHeR9FM1RDGcojRTraypH87kF2TeozKtfrDWMH\nFO/iZ5ZiIG16glMhFTvI8IG+60kw6D91ZBTR3TfLi8FjJSidoAN9txvVMRKQ+h/r\nWiQa9Tz6N3100wiy874Bxt6XIwKBgQC66bDVIg+OesC4DnUaBypE8YjXcfHpy0S6\nejkded1OP7K61eT7KW7wS+mZjUrp2DKM+pFnEUGGiaDhTdcRhB6wyx10FLsbnoRc\nU27XCxRD8qbvYh0I0xtpo3w9bqmEaUxwEiXkvVOlvKq7xDE2iz7GPsgsUcqdysq9\nEi4e+9tGRwKBgQDZuzlRArhBdi1vd2l9mDgqRYbffm5/gmKgxgNDmiF7XCig+Bkh\n6gpY+E/YCdodEgP1l1eqSXPK5A698/pElQwq4Xo7omslVDuX0MNTBIiu8DE+ZASF\n77zHK+sUn5VHRyy1kbHrIqdzPUFEplJ3x274eTqFqnR0pUnJ+/XYXAAOFQKBgHJH\nEOOumH5PVObzh+sq+FAAsN6wfuynZ9Tvh14bNRBzZ45N2lspYPewIhnMxkGk+nsx\nc5bleP+Nw/wcgGLoOW90MATZ6/AeAeUE6d62mmRUxnXTsdbEY5055GsW7rPTQXW/\n0sVAcBUD/gshD8m+ZtoEZpSaSVwiMcRZijNNXypfAoGAMmio4IdBvdNv9b292T3J\nV4PVFiUTgDD/bcVm5VFUjrXWDi6MFnJWmrthpKb45+GHJ18A7gUiwB+gc0HZDG/m\n69ezImRp7ZspYaFFcQa9tJiMMw5IZdmJIXrzR09XZqu0OuIYT+HL4tUqKHfLO7D+\nw7dO6WxroUA/gnQNnrBqt1U=\n-----END PRIVATE KEY-----\n",
+  "client_email": "rr-receipt-reader@second-lodge-275202.iam.gserviceaccount.com",
+  "client_id": "105250963206565425209",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/rr-receipt-reader%40second-lodge-275202.iam.gserviceaccount.com"
+}
